@@ -1,74 +1,125 @@
+macOS = True
+
 import numpy as np
 import cv2
 import time
 import pyautogui
-from pynput.keyboard import Key, Controller as keyboardController
-from pynput.mouse import Button, Controller as mouseController
-from pynput import mouse as mMouse
+import threading
+from pynput.keyboard import KeyCode, Listener, Controller as kbController
+from pynput.mouse import Button, Controller as mController
 from time import sleep
-import mouse as testMouse
+#uncomment mouse inport on Windows 
+if not macOS:
+  import mouse as testMouse
 
-keyboard = keyboardController()
-mouse = mouseController()
+kbController = kbController()
+mController = mController()
 
-deg90 = 606
+#horrisontal pixel offset for turning 90 deg
+horOffset = 606
+lookSpeed = 100
+start_stop_key = KeyCode(char='r')
+exit_key = KeyCode(char='e')
+delay = .5
 
-run = True
+class Bot(threading.Thread):
+  def __init__(self, delay):
+    super().__init__()
+    print("init")
+    self.delay = delay
+    self.running = False
+    self.program_running = True
 
-def mine():
-  mouse.press(Button.left)
-  time.sleep(.6)
-  mouse.release(Button.left)
+  def start_bot(self):
+    self.running = True
+    print("start")
 
-def walkForward():
-  keyboard.press('w')
-  time.sleep(.3)
-  keyboard.release('w')
+  def stop(self):
+    self.running = False
+    print("Stop")
 
-def turnLeft():
-  keyboard.press('u')
-  sleep(2)
-  keyboard.release('u')
+  def exit(self):
+    print("Exit")
+    self.stop()
+    self.program_running = False
 
-def turnRight():
-    for x in range(0, int(deg90 / 6)):
-        sleep(0.001)
-        testMouse._os_mouse.move_relative(6, 0)
+  def run(self):
+    print("in run")
+    while self.program_running:
+      print("program running")
+      while self.running:
+        print("running")
+        self.walkForward()
+        sleep(self.delay)
 
-def on_move(x, y):
-    pass
-  #print('Pointer moved to {0}'.format((x, y)))
+  def mine():
+    mController.press(Button.left)
+    sleep(.6)
+    mController.release(Button.left)
 
-def on_click(x, y, button, pressed):
-  print('{0} at {1}'.format('Pressed' if pressed else 'Released',(x, y)))
-  if button == Button.right:
-      run = False
-      print("Stopping")
-  #if not pressed:
-    # Stop listener
-      #return False
+  def walkForward(self): #walks an average of 0.99 blocks per call
+    print("Walking")
+    kbController.press('w')
+    sleep(.22)
+    kbController.release('w')
 
-def on_scroll(x, y, dx, dy):
-    pass
-  #print('Scrolled {0} at {1}'.format('down' if dy < 0 else 'up',(x, y)))
+  def turnLeft():
+    remainder = horOffset % lookSpeed
+    step = int(horOffset / lookSpeed)
+    for x in range(0, lookSpeed):
+      sleep(0.001)
+      testMouse._os_mouse.move_relative(step, 0)
+    testMouse._os_mouse.move_relative(remainder, 0)
 
-def lookUp():
-  keyboard.press('8')
-  sleep(3)
-  keyboard.release('8')
+  def lookRight():
+    remainder = horOffset % lookSpeed
+    step = int(horOffset / lookSpeed)
+    for x in range(0, lookSpeed):
+      sleep(0.001)
+      testMouse._os_mouse.move_relative(step, 0)
+    testMouse._os_mouse.move_relative(remainder, 0)
 
-# Collect events until released
-#with mMouse.Listener(
-#  on_move=on_move,
-#  on_click=on_click,
-#  on_scroll=on_scroll) as listener:listener.join()
+  def _lookRight():
+    remainder = horOffset % lookSpeed
+    step = int(horOffset / lookSpeed)
+    for x in range(0, lookSpeed):
+      sleep(0.001)
+      mController.move(step, 0)
+    mController.move(remainder, 0)
+
+  def lookUp():
+    mController.press('8')
+    mController.release('8')
 
 def main():
   count = 1
   sleep(2)
-  turnRight()
+  lookRight()
 
-main()
+bot_thread = Bot(delay)
 
+def _main():
+  print("starting bot")
+  bot_thread.start()
+
+
+if macOS:
+  _main()
+else:
+  main()
+
+def on_press(key):
+  print(key)
+  if key == start_stop_key:
+    if bot_thread.running:
+      bot_thread.stop()
+    else:
+      bot_thread.start_bot()
+  elif key == exit_key:
+    bot_thread.exit()
+    listener.stop()
+
+with Listener(on_press=on_press) as listener:
+  listener.join()
 
 
