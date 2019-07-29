@@ -44,9 +44,7 @@ class Bot(threading.Thread):
     self.program_running = False
 
   def run(self):
-    print("in run")
     while self.program_running:
-      print("program running")
       while self.running:
         print("running")
         self.walkForward()
