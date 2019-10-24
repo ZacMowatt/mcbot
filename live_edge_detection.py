@@ -5,7 +5,18 @@ from PIL import ImageGrab
 def nothing(x):
     pass
 
+valid = False
 live = True
+
+while(!valid)
+    print("Select Mode:")
+    print("1. Live Detection")
+    print("2. Detect From File")
+    
+    mode = int(input(">"))
+    if mode == 1 | mode == 2
+        valid = True
+
 showOrigional = True
 cv2.namedWindow("Output")
 
