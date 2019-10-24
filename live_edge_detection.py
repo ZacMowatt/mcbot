@@ -8,7 +8,7 @@ def nothing(x):
 valid = False
 live = True
 
-while(!valid)
+while(not valid)
     print("Select Mode:")
     print("1. Live Detection")
     print("2. Detect From File")
@@ -40,8 +40,7 @@ if live:
         if cv2.waitKey(25) & 0xFF == ord('q'):
             cv2.destroyAllWindows()
             break
-else:
-    
+else: 
     img = cv2.imread('screenshot.png',1)
     edges = cv2.Canny(img,100,50)
 
