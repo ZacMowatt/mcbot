@@ -21,6 +21,7 @@ lookSpeed = 100
 start_stop_key = KeyCode(char='r')
 exit_key = KeyCode(char='e')
 delay = .5
+straight_mode = 1
 
 class Bot(threading.Thread):
   def __init__(self, delay):
@@ -29,6 +30,7 @@ class Bot(threading.Thread):
     self.delay = delay
     self.running = False
     self.program_running = True
+    self.mode = 0
 
   def start_bot(self):
     self.running = True
@@ -46,15 +48,26 @@ class Bot(threading.Thread):
   def run(self):
     while self.program_running:
       while self.running:
-        print("running")
+        #print("running")
+        switch self.mode
+          case 0
+            pass
+            break
+          case 1
+            self.mine_straight()
         self.walkForward()
         sleep(self.delay)
 
-  def mine():
+  def mine(self):
     mController.press(Button.left)
     sleep(.6)
     mController.release(Button.left)
-
+  
+  def mine_straight(self):
+    self.mine()
+    self.mine()
+    self.walkForward()
+  
   def walkForward(self): #walks an average of 0.99 blocks per call
     print("Walking")
     kbController.press('w')
