@@ -2,10 +2,23 @@ import cv2
 import numpy as np
 from PIL import ImageGrab
 
+
 def nothing(x):
     pass
 
-live = False
+
+valid = False
+live = True
+
+while(not valid)
+print("Select Mode:")
+print("1. Live Detection")
+print("2. Detect From File")
+
+mode = int(input(">"))
+if mode == 1 | mode == 2:
+    valid = True
+
 showOrigional = True
 cv2.namedWindow("Output")
 
@@ -24,21 +37,20 @@ if live:
         cv2.imshow("Output", edges)
 
         if showOrigional:
-            cv2.imshow("Origional", cv2.cvtColor(np.array(img), cv2.COLOR_BGR2RGB))
+            cv2.imshow("Origional", cv2.cvtColor(
+                np.array(img), cv2.COLOR_BGR2RGB))
 
         if cv2.waitKey(25) & 0xFF == ord('q'):
             cv2.destroyAllWindows()
             break
 else:
-    
-    img = cv2.imread('screenshot.png',1)
-    edges = cv2.Canny(img,100,50)
+    img = cv2.imread('screenshot.png', 1)
+    edges = cv2.Canny(img, 100, 50)
 
     cv2.imshow('Origional', img)
     cv2.imshow('Edges', edges)
 
     print(edges)
-
 
     cv2.waitKey(0)
     cv2.destroyAllWindows()
