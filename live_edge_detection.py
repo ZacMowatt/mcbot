@@ -5,20 +5,20 @@ from PIL import ImageGrab
 def nothing(x):
     pass
 
-live = True
+live = False
 showOrigional = True
 cv2.namedWindow("Output")
 
-cv2.createTrackbar("Min", "Output", 0, 400, nothing)
+cv2.createTrackbar("Min", "Output", 0, 500, nothing)
 cv2.setTrackbarPos("Min", "Output", 70)
-cv2.createTrackbar("Max", "Output", 0, 400, nothing)
+cv2.createTrackbar("Max", "Output", 0, 500, nothing)
 cv2.setTrackbarPos("Max", "Output", 150)
 
 if live:
     while(True):
         max = cv2.getTrackbarPos("Max", "Output")
         min = cv2.getTrackbarPos("Min", "Output")
-        img = ImageGrab.grab(bbox=(0, 0, 400, 300))
+        img = ImageGrab.grab(bbox=(500, 240, 1100, 840))
         edges = cv2.Canny(np.array(img), min, max)
 
         cv2.imshow("Output", edges)
