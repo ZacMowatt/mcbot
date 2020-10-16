@@ -16,7 +16,7 @@ while(not valid):
     print("2. Detect From File")
 
     mode = int(input(">"))
-    if mode == 1 | mode == 2:
+    if mode == 1 or mode == 2:
         valid = True
 
 showOrigional = True
