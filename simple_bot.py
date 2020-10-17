@@ -1,3 +1,4 @@
+
 from time import sleep
 from pynput.mouse import Button, Controller as mController
 from pynput.keyboard import KeyCode, Listener, Controller as kbController
@@ -11,8 +12,8 @@ if not macOS:
     import mouse as mouse
     import keyboard
 
-kbController = kbController()
-mController = mController()
+kb_controller = kb_controller()
+m_controller = m_controller()
 
 # horrisontal pixel offset for turning 90 deg
 horr_offset = 605
@@ -47,7 +48,6 @@ stone_time = .4
 
 
 class Bot(threading.Thread):
-
     blocks_mined = 0
     iron_pick_durability = 240
     pick_slot_index = 0
