@@ -5,19 +5,19 @@ import cv2
 import time
 import pyautogui
 import threading
-from pynput.keyboard import KeyCode, Listener, Controller as kbController
-from pynput.mouse import Button, Controller as mController
+from pynput.keyboard import KeyCode, Listener, Controller as kb_controller
+from pynput.mouse import Button, Controller as m_controller
 from time import sleep
 #uncomment mouse inport on Windows 
 if not macOS:
-  import mouse as testMouse
+  import mouse as test_mouse
 
-kbController = kbController()
-mController = mController()
+kb_controller = kb_controller()
+m_controller = m_controller()
 
 #horrisontal pixel offset for turning 90 deg
-horOffset = 606
-lookSpeed = 100
+hor_offset = 606
+look_speed = 100
 start_stop_key = KeyCode(char='r')
 exit_key = KeyCode(char='e')
 delay = .5
@@ -55,57 +55,57 @@ class Bot(threading.Thread):
             break
           case 1
             self.mine_straight()
-        self.walkForward()
+        self.walk_forward()
         sleep(self.delay)
 
   def mine(self):
-    mController.press(Button.left)
+    m_controller.press(Button.left)
     sleep(.6)
-    mController.release(Button.left)
+    m_controller.release(Button.left)
   
   def mine_straight(self):
     self.mine()
     self.mine()
-    self.walkForward()
+    self.walk_forward()
   
-  def walkForward(self): #walks an average of 0.99 blocks per call
+  def walk_forward(self): #walks an average of 0.99 blocks per call
     print("Walking")
-    kbController.press('w')
+    kb_controller.press('w')
     sleep(.22)
-    kbController.release('w')
+    kb_controller.release('w')
 
-  def turnLeft():
-    remainder = horOffset % lookSpeed
-    step = int(horOffset / lookSpeed)
-    for x in range(0, lookSpeed):
+  def turn_left(self):
+    remainder = hor_offset % look_speed
+    step = int(hor_offset / look_speed)
+    for x in range(0, look_speed):
       sleep(0.001)
-      testMouse._os_mouse.move_relative(step, 0)
-    testMouse._os_mouse.move_relative(remainder, 0)
+      test_mouse._os_mouse.move_relative(step, 0)
+    test_mouse._os_mouse.move_relative(remainder, 0)
 
-  def lookRight():
-    remainder = horOffset % lookSpeed
-    step = int(horOffset / lookSpeed)
-    for x in range(0, lookSpeed):
+  def look_right(self):
+    remainder = hor_offset % look_speed
+    step = int(hor_offset / look_speed)
+    for x in range(0, look_speed):
       sleep(0.001)
-      testMouse._os_mouse.move_relative(step, 0)
-    testMouse._os_mouse.move_relative(remainder, 0)
+      test_mouse._os_mouse.move_relative(step, 0)
+    test_mouse._os_mouse.move_relative(remainder, 0)
 
-  def _lookRight():
-    remainder = horOffset % lookSpeed
-    step = int(horOffset / lookSpeed)
-    for x in range(0, lookSpeed):
+  def _look_right(self):
+    remainder = hor_offset % look_speed
+    step = int(hor_offset / look_speed)
+    for x in range(0, look_speed):
       sleep(0.001)
-      mController.move(step, 0)
-    mController.move(remainder, 0)
+      m_controller.move(step, 0)
+    m_controller.move(remainder, 0)
 
-  def lookUp():
-    mController.press('8')
-    mController.release('8')
+  def look_up(self):
+    m_controller.press('8')
+    m_controller.release('8')
 
 def main():
   count = 1
   sleep(2)
-  lookRight()
+  look_right()
 
 bot_thread = Bot(delay)
 
