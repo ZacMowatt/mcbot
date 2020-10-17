@@ -21,6 +21,13 @@ class Bot(threading.Thread):
         self.totalSteps = 0
         self.totalDistance = 0
 
+        self.needInput = True
+        while(self.needInput):
+            mode = int(input("Mode: Horizontal(1) Vertical(2) >>"))
+            if(mode == 1 or mode == 2):
+                self.mode = mode
+                self.needInput = False
+
     def startScript(self):
         self.running = True
 
@@ -31,7 +38,8 @@ class Bot(threading.Thread):
     def run(self):
         while True:
             while self.running:
-                mouse._os_mouse.move_relative(self.step, 0)
+                mouse._os_mouse.move_relative(
+                    self.step if self.mode == 1 else 0, 0 if self.mode == 1 else self.step)
                 self.totalSteps = self.totalSteps + 1
                 sleep(0.001)
 
