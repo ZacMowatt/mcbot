@@ -21,6 +21,12 @@ class Bot(threading.Thread):
         self.totalSteps = 0
         self.totalDistance = 0
 
+        self.setup()
+
+    def startScript(self):
+        self.running = True
+
+    def setup(self):
         self.needInput = True
         while(self.needInput):
             mode = int(input("Mode: Horizontal(1) Vertical(2) >>"))
@@ -28,12 +34,10 @@ class Bot(threading.Thread):
                 self.mode = mode
                 self.needInput = False
 
-    def startScript(self):
-        self.running = True
-
     def stopScript(self):
         self.running = False
         print("Total distance = {}".format(self.totalSteps * self.step))
+        self.setup()
 
     def run(self):
         while True:
@@ -77,5 +81,5 @@ def on_move(x, y):
 
 script.start()
 
-with MouseListener(on_click=on_click, on_move=on_move) as listener:
+with MouseListener(on_click=on_click) as listener:
     listener.join()
