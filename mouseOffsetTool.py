@@ -29,10 +29,21 @@ class Bot(threading.Thread):
     def setup(self):
         self.needInput = True
         while(self.needInput):
-            mode = int(input("Mode: Horizontal(1) Vertical(2) >>"))
-            if(mode == 1 or mode == 2):
-                self.mode = mode
+            try:
+                mode = int(input("Mode: Horizontal(1) Vertical(2) >>"))
+                if(mode == 1 or mode == 2):
+                    self.mode = mode
+                    self.needInput = False
+            except:
+                print("Please enter a number")
+
+        self.needInput = True
+        while(self.needInput):
+            try:
+                self.step = int(input("Step Value >>"))
                 self.needInput = False
+            except:
+                print("Please enter a number")
 
     def stopScript(self):
         self.running = False
